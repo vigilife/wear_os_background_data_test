@@ -15,6 +15,7 @@ void main() async {
 
   workout.stream.listen((e) => debugPrint('${e.feature}: ${e.value}'));
 
+  // Comment this out to see Health Services behave normally
   accelerometerEvents
       .throttle((_) => TimerStream(true, const Duration(seconds: 1)))
       .listen(((event) => debugPrint(event.toString())));
