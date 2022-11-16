@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:wear/wear.dart';
@@ -9,28 +8,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final workout = Workout();
-
-  final flnp = FlutterLocalNotificationsPlugin();
-
-  await flnp.initialize(
-    const InitializationSettings(
-      android: AndroidInitializationSettings('ic_notification_icon'),
-    ),
-  );
-
-  await flnp
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()!
-      .startForegroundService(
-    123,
-    'test',
-    'test',
-    notificationDetails: const AndroidNotificationDetails('test', 'test'),
-    foregroundServiceTypes: {
-      AndroidServiceForegroundType.foregroundServiceTypeMicrophone
-    },
-  );
-
   await workout.start(
     exerciseType: ExerciseType.walking,
     features: WorkoutFeature.values,
