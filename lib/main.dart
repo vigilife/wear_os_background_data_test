@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:noise_meter/noise_meter.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:wear/wear.dart';
@@ -22,11 +24,23 @@ class _MyAppState extends State<MyApp> {
   void initState() async {
     super.initState();
 
+    await startForegroundService();
+    await startWorkout();
+
+    // Comment this out to see Health Services behave normally
+    listenToAccelerometer();
+
+    // Comment this out to see Health Services behave normally
+    listenToNoise();
+  }
+
+  Future<void> startForegroundService() => FlutterLocalNotificationsPlugin()
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()!
+      .startForegroundService(123, 'test', 'test');
+
+  Future<void> startWorkout() async {
     final workout = Workout();
-    await workout.start(
-      exerciseType: ExerciseType.walking,
-      features: WorkoutFeature.values,
-    );
 
     workout.stream.listen((e) {
       debugPrint('${e.feature}: ${e.value}');
@@ -36,11 +50,19 @@ class _MyAppState extends State<MyApp> {
       }
     });
 
-    // Comment this out to see Health Services behave normally
-    accelerometerEvents
-        .throttle((_) => TimerStream(true, const Duration(seconds: 1)))
-        .listen((event) => debugPrint(event.toString()));
+    await workout.start(
+      exerciseType: ExerciseType.walking,
+      features: WorkoutFeature.values,
+    );
   }
+
+  void listenToAccelerometer() => accelerometerEvents
+      .throttle((_) => TimerStream(true, const Duration(seconds: 1)))
+      .listen((event) => debugPrint(event.toString()));
+
+  void listenToNoise() => NoiseMeter().noiseStream.listen((noise) {
+        debugPrint(noise.toString());
+      });
 
   @override
   Widget build(BuildContext context) {
