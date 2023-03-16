@@ -46,10 +46,8 @@ class _MyAppState extends State<MyApp> {
     await startForegroundService();
     await startWorkout();
 
-    // Comment this out to see Health Services behave normally
+    // Comment these out to see Health Services behave normally
     listenToAccelerometer();
-
-    // Comment this out to see Health Services behave normally
     listenToNoise();
   }
 
