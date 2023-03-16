@@ -13,7 +13,7 @@ dependencies:
   wear:
     git:
       url: https://github.com/Rexios80/flutter_wear_plugin.git
-      ref: c5ca3ce5faf134602e93c1792f1fb0f8a8919465
+      ref: 473262879853259129e0a1d7431ce2e024746d58
   rxdart: ^0.27.7
   sensors_plus: ^2.0.1
   flutter_local_notifications: ^13.0.0
